@@ -1,0 +1,12 @@
+nav{
+    background-color: rgb(47, 79, 79, 0.7);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px, 30px;
+    margin-bottom: 20px;
+}
+
+nav img{
+    filter: hue-rotate(100deg);
+}
