@@ -5,11 +5,25 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  
+  background-image: url('https://images3.alphacoders.com/812/812062.png');
   background-attachment: fixed;
+  background-size: cover;
+  background-color: midnightblue;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a{
+  color: #FFF;
+  text-decoration: none;
+  display:flex;
+  flex-direction: column;
+  font-weight: bold;
+  
+}
+
+
+

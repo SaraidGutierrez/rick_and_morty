@@ -1,71 +1,108 @@
-import { Link } from 'react-router-dom'
+
 import { useState } from 'react';
+import validation from './validation';
+import styled from 'styled-components'
 
-
-
-const Form = () =>{
-
-
-    const [error, setError] = useState(
-        {});
-    const [userData, setUserData] = useState(
-        { username: '', password: '' });
+const Forma = styled.form`
     
-        const validation = ()=>{
-            const regEx1= /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-            const regEx= /^(?=.*\d).{8,}$/
-            
-            if(!regEx.test(userData.password) && !regEx1.test(userData.username)){
-                setError({password:'Password is not valid', username: 'Username is not valid'});
-                console.log(error,'linea 21')
-            }
-            if(!regEx1.test(userData.username)){
-                setError({username:'Correo invalido'})
-            }
-            if(!regEx1.test(userData.password)){
-                setError({...error, password:'Contraseña invalida'})
-            }
-            
-          };
-  
-        //const passwordValidation = ()=>{
-            //minumo 8 y un numero
-            // Saraid234
-        
-    const handleSubmit = (e)=>{
-        e.preventDefault();
-        validation();
+    display: grid;
+    width: 30%;
+    margin: 50px auto;
+    padding: 10px;
+    margin-top: 50px;
+    border-radius: 5px;
+    padding-top:30px;
+    padding-bottom: 20px;
 
-    };
+`
+
+const Etiqueta = styled.label`
+margin-right:auto;
+padding-left:20px;
+margin-top:30px;
+margin-bottom: 10px;
+font-family:Verdana, Tahoma, sans-serif;
+font-size: large;
+font-weight: bold;
+color: white;
+text-shadow: 10px 0 10px #0f0316b4;
+
+`
+const Entrada = styled.input`
+padding: 10px 10px 10px 10px;
+border-radius: 30px;
+border: 2px solid #270a58;
+`
+const Boton = styled.button`
+margin-top: 60px;
+padding:10px 10px 10px 10px ;
+border-radius: 30px;
+background-color: #5d00ff;
+color: #FFF;
+font-size: large;
+font-weight: bolder;
+border: 2px solid #270a58;
+`
+
+const Error = styled.p`
+    color: #FFF;
+    font-weight:700;
+    margin-right:auto;
+
+`
+
+const Form = ({login}) =>{
+
+
+    const [errors, setErrors] = useState({
+        username: '', password: '' 
+    });
+    const [userData, setUserData] = useState(
+        { username: '', password: '' 
+    });
+    
+    const handleSubmit = ((event)=>{
+            event.preventDefault()
+            login(userData)
+    })
+      
+        
+    
 
     const handleOnChange = (e) =>{
-        console.log(userData)
+       
         setUserData({
             ...userData,
             [e.target.name]:e.target.value
             
         })
+        setErrors(validation({
+            ...userData,
+            [e.target.name]:e.target.value
+        }))
     }
-    
+    console.log(errors, 'objeto de errores')
     return (
-        <form>
-            <label>Username</label>
-            <input 
+        <Forma onSubmit={handleSubmit}>
+            <Etiqueta>Username</Etiqueta>
+            <Entrada 
                 type='text'
                 onChange={handleOnChange}
                 name='username'
+                value={userData.username}
             />
-            <p>{error.username}</p>
-            <label>Password</label>
-            <input 
+            {errors.username && <Error>{errors.username}</Error>}
+            <Etiqueta>Password</Etiqueta>
+            <Entrada 
                 type='text'
                 onChange={handleOnChange}
                 name='password'
+                value={userData.password}
             />
-            <p>{error.password}</p>
-            <button onClick={handleSubmit}>Check</button>
+            {errors.password &&<Error>{errors.password}</Error>}
+            <Boton >Login</Boton>
             
-        </form>
+        </Forma>
     )
  }
 

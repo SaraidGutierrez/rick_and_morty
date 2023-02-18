@@ -1,5 +1,11 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect }  from 'react'
+import {deleteFavorite, addFavorite} from '../redux/actions'
+
+
 const Boton = styled.button`
      background:#c00;
      color: white;
@@ -49,12 +55,36 @@ const ElementosNomYGen= styled.h2`
     
 
 
+function Card (props){
 
-export default function Card(props) {
-   console.log(props)
+   const myFavorites = useSelector(state=>state.myFavorites)
+   const dispatch= useDispatch()
+   const [isFav, setIsFav] = useState(false)
+   
+   const handleFavorite = () => {
+      if(isFav){
+         setIsFav(false)
+         dispatch(deleteFavorite(props.id))
+      }else{
+         setIsFav(true)
+         dispatch(addFavorite(props))
+      }
+   } 
+
+   useEffect(() => {
+      myFavorites.forEach((fav) => {
+         if (fav.id === props.id) {
+            setIsFav(true);
+         }
+      });
+   }, [myFavorites]);
+
    return (
       <Cartas>
-         
+         {isFav ? 
+         ( <button onClick={handleFavorite}>❤️</button>) : 
+         (<button onClick={handleFavorite}>🤍</button>)
+         }
          <Boton onClick={props.onClose}>X</Boton>
          <Link to={`/detail/${props.id}`}>
             <Nombre>{props.name}</Nombre>
@@ -68,3 +98,8 @@ export default function Card(props) {
       </Cartas>
    );
 }
+
+
+ 
+
+export default Card
