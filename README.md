@@ -1,70 +1,141 @@
-# Getting Started with Create React App
+# HW 03: Promises | Integración
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **🕒 Duración estimada**
 
-## Available Scripts
+x minutos
 
-In the project directory, you can run:
+<br />
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## **💻 Rick & Morty App**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### **📝 INTRO**
 
-### `npm test`
+En esta homework vamos a seguir trabajando en nuetra App de Rick & Morty del lado del servidor. En esta ocasión crearemos algunas rutas asincrónicas que nos permitirán darle mejor funcionamiento a nuestra aplicación.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Crearemos una ruta para manejar las funcionalidades:
 
-### `npm run build`
+-  GET onSearch
+-  GET Detail
+-  GET favorites
+-  POST favorites
+-  DELETE favorites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br />
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## **📋 INSTRUCCIONES**
 
-### `npm run eject`
+### **👩‍💻 EJERCICIO 1**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### **GET Search**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Dirígete a tu carpeta `controllers` y crea un archivo llamado `getCharById.js`. Dentro de este archivo deberás:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+-  Declarar una variable con el nombre "_getCharById_" y exportarla. Esta variable será una función que recibe dos parámetros: **res** y **ID**.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+-  Dentro de la función deberás hacer una petición (_código asincrónico_) a la URL `https://rickandmortyapi.com/api/character/:id`. Debes utilizar promesas para realizar esto. Recuerda que debes agregar el ID recibido por parámetro al final de esta URL.
 
-## Learn More
+> **[NOTA]:** puedes utilizar axios o fetch. ¡Como más gustes!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+-  Una vez que tienes la respuesta de la petición, crea un objeto en el que guardarás las propidades **id**, **image**, **name**, **gender** y **species** que recibiste como respuesta (todos los datos de la petición se encuentran dentro de una propiedad llamada **data**).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+-  Una vez creado el objeto, deberás devolver una respuesta con status `200`, un Content-Type igual a `application/json`, y finalmente responde el objeto que creaste convertido en JSON:
 
-### Code Splitting
+```javascript
+res.end(JSON.stringify(objeto));
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+-  En el caso de que la promesa tenga algún fallo es importante que concatenes un `.catch` al final de la promesa para poder manejar el error. Dentro del catch deberás devolver una respuesta con status `500`, un Content-Type igual a `text/plain`, y finalmente responde con la propiedad **message** del error.
 
-### Analyzing the Bundle Size
+2. ¡Listo! Ya tenemos nuestro primer controlador. Ahora lo vamos a utilizar en nuestra ruta. Para esto, dirígete al archivo llamado **`server.js`**. **Elimina** todo el contenido de este archivo, y también elimina el archivo **`data.js`** de la carpeta **utils**.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3. Dentro de este archvio tendrás que:
 
-### Making a Progressive Web App
+   -  Importar **http** y el controlador que creaste.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   -  Crear y levantar un servidor en el puerto **3001**.
 
-### Advanced Configuration
+   -  Dentro del callback del servidor debes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+      -  Crea el callback del servidor que recibe a **`req`** y a **`res`**.
 
-### Deployment
+      -  copiar y pegar la siguiente línea dentro del callback de este servidor:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+      ```javascript
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      ```
 
-### `npm run build` fails to minify
+      > **[NOTA]**: esta línea permitirá contectar tu FRONT con el SERVIDOR sin que haya problemas de CORS.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+      -  crear un condicional que pregunte si la **url** incluye el string "_**onsearch**_". En el caso de que si lo incluya deberás ejecutar el controlador que creamos en el ejercicio anterior pasándole como argumentos:
+
+         -  El parámetro **`res`**.
+
+         -  El segundo parámetro debe ser el ID del personaje que recibes mediante la URL.
+
+      > **[PISTA]:** dentro del parámetro **`req.url`** está el id del personaje. Puedes utilizar el método split() para obtenerlo...
+
+<br />
+
+---
+
+### **👩‍💻 EJERCICIO 2**
+
+### **GET Detail**
+
+Ahora crearemos la ruta para obtener el detalle de un personaje.
+
+1. Dirígete a tu carpeta `controllers` y crea un archivo llamado `getCharDetail.js`. Dentro de este archivo deberás:
+
+   -  Declarar una variable con el nombre "_getCharDetail_" y exportarla. Esta variable será una función que recibe dos parámetros: **res** y **ID**.
+
+   -  El resto de la lógica de esta función es exactamente igual al ejercicio anterior, con la diferencia que esta vez debes obtener todas estas propiedades del personaje: **image**, **name**, **gender**, **status**, **origin** y **species**.
+
+2. En tu archivo **`server.js`** tienes que:
+
+   -  Importar el nuevo controlador.
+
+   -  Crear un condicional que verifique si la URL recibida incluye el string "_**detail**_". En el caso de que esto sea verdadero tendrás que obtener el ID que recibes al final de la URL, y ejecutar este controlador pasándole como parámetros: **res** y **ID**.
+
+<br />
+
+---
+
+### **👀 COMPROBEMOS...**
+
+Levanta el servidor con el comando:
+
+```bash
+    npm start
+```
+
+Una vez levantado, verifica lo siguiente:
+
+</br >
+
+### **ON SEARCH**
+
+Ve del lado del Front-End de tu proyecto, y busca la función **onSearch**. En ella deberás eliminar la URL de la API de Rick&Morty y pegar la nueva URL de tu servidor: **`http://localhost:3001/rickandmorty/onsearch/`**. Si levantas tu proyecto deberías de poder utilizar tu search-bar normalmente.
+
+</br >
+
+### **DETAIL**
+
+Ahora queda que vayas a tu componente **Detail.jsx** y reemplaces la URL de la API con esta nueva URL de tu servidor: **`http://localhost:3001/rickandmorty/detail/`**. Ahora podrás ingresar al detalle de cualquier personaje sin problemas.
+
+---
+
+</br >
+
+## **🚨 A TENER EN CUENTA**
+
+Si tu servidor no está levantado, o si los links no fueron bien escritos, tu aplicación no funcionará correctamente.
+
+</br >
+
+---
+
+¡Hemos terminado por ahora!🥳
