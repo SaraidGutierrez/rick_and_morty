@@ -5,7 +5,7 @@ const axios = require("axios")
 
 async function getCharByID (req, res){
     const { id } = req.params
-
+console.log('holii  linea 9 getcharid')
     try {
        const response = await axios.get(URL + id)
     const personaje = {

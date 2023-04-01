@@ -23,7 +23,7 @@ const favoritesReducer = (state= initialState, action) => {
                 favoritesFilter: action.payload
             }
         case FILTER:
-            //state.favoritesFilter = myFavorites
+            state.favoritesFilter = state.myFavorites
             return{
                 ...state,
                 favoritesFilter: state.myFavorites.filter(character => character.gender === action.payload)
@@ -35,16 +35,17 @@ const favoritesReducer = (state= initialState, action) => {
                 orderFav = state.myFavorites.sort((a,b)=>
                     a.id > b.id ? 1 : -1
                 )
+                console.log(orderFav, 'reducer linea 38')
             }else{
                 orderFav = state.myFavorites.sort((a,b)=>
                     a.id < b.id ? 1 : -1
                 )
-
+                 console.log(orderFav, 'reducer linea 42')
             }
             
             return{
                 ...state,
-                myFavorites:[...orderFav],
+                favoritesFilter:[...orderFav],
             }
 
         case RESET:

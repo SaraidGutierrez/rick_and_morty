@@ -5,7 +5,8 @@ export const addFavorite = (character) => {
     
     return async  function( dispatch){ 
         try {
-            const response = await axios.post('http://localhost:3001/rickandmorty/create', character)
+            //const response = await axios.post('http://localhost:3001/rickandmorty/create', character)
+            const response = await axios.post('http://localhost:3001/fav', character)
             dispatch({
                 type: ADD_FAVORITE, 
                 payload: response.data 
@@ -21,8 +22,8 @@ export const addFavorite = (character) => {
 export const getAllFavorites = () => {
     return async function (dispatch) {
         try {
-            const response = await  axios.get('http://localhost:3001/rickandmorty/get')
-        
+            //const response = await  axios.get('http://localhost:3001/rickandmorty/get')
+            const response = await  axios.get('http://localhost:3001/get')
             return dispatch({
                 type: GET_FAVORITES,
                 payload: response.data
@@ -36,7 +37,8 @@ export const getAllFavorites = () => {
 export const deleteFavorite = (id) => {
     return async function (dispatch){
         try {
-            const response = await axios.delete(`http://localhost:3001/rickandmorty/delete/${id}`)
+            //const response = await axios.delete(`http://localhost:3001/rickandmorty/delete/${id}`)
+            const response = await axios.delete(`http://localhost:3001/delete/${id}`)
         } catch (error) {
             return {error: error}
         }

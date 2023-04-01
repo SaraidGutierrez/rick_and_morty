@@ -52,6 +52,36 @@ const ElementosNomYGen= styled.h2`
     
 `
 
+const Seleccionar = styled.select`
+    background-color: #1abc9c;
+  color: #fff;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em; 
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 30px;
+  text-overflow: '';
+`
+
+const Boton2=styled.button`
+      background-color: #701770;
+      color: #FFf;
+      border-radius: 30px;
+      padding: 10px;
+      font-weight: bold;
+      border:none;
+
+      &:hover {
+         color: #4498ff;
+       }
+
+    `
+
 const Favorites = () => {
     const dispatch = useDispatch()
     const filter =  useRef(null)
@@ -73,19 +103,19 @@ const Favorites = () => {
     return (
     <div>
         <div>
-            <select ref= {order} onChange={(e)=>{dispatch(orderCards(e.target.value))}}>
+            <Seleccionar ref= {order} onChange={(e)=>{dispatch(orderCards(e.target.value))}}>
                 {['Ascendente', 'Descendente'].map((e,i)=>{return <option value= {e} key={i}>{e}</option>})}
-            </select>
-            <select ref = {filter} onChange={(e)=>{dispatch(filterCards(e.target.value))}}>
+            </Seleccionar>
+            <Seleccionar ref = {filter} onChange={(e)=>{dispatch(filterCards(e.target.value))}}>
                 {['Male', 'Female', 'unknown', 'Genderless'].map((e,i)=>{return <option value= {e} key={i}>{e}</option>})}
-            </select>
-            <button value='reset' onClick={handleReset}> Reset</button>
+            </Seleccionar>
+            <Boton2 value='reset' onClick={handleReset}> Reset</Boton2>
         </div>
 
         { favs?.map((character) => {
             return (
             <Cartas key={character.id}>
-                <Boton onClick={character.onClose}>X</Boton>
+                
                 <Link to={`/detail/${character.id}`}>
                 <Nombre>{character.name}</Nombre>
                 </Link>

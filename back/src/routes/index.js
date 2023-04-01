@@ -2,30 +2,29 @@
 const {Router} = require('express')
 const {getCharByID} = require('../controllers/getCharById')
 const {getCharDetail} = require('../controllers/getCharDetail')
+const {login} = require('../controllers/login')
+const {postFav} = require('../controllers/postFav')
+const {postUser} = require('../controllers/postUser')
+const {deleteFav} = require('../controllers/deleteFav')
+const {getFavs} = require('../controllers/getFavs')
+
+
+
 
 
 const router = Router()
-let favs = require('../utils/favs')
+
 
 router.get("/onsearch/:id", getCharByID)
 router.get("/detail/:detailID", getCharDetail)
 
-router.post('/create', (req,res)=>{
-    favs.push({...req.body})
-    console.log(favs, 'favs line 15')
-    res.status(200).json(favs)
-} )
+
+router.get("/fav", getFavs);
+router.post('/fav', postFav)
+router.delete('/fav/:id', deleteFav)
+
+router.post('/login',postUser )
+router.get('/login',login )
 
 
-router.get('/get',(req,res)=>{
-    return res.json(favs)
-} )
-
-
-router.delete('/delete/:id',(req,res)=>{
-    const { id } = req.params
-    favs = favs.filter(item => item.id !== Number(id))
-    return res.status(200).json(favs)
-} )
-
-module.exports = router
+module.exports = router;

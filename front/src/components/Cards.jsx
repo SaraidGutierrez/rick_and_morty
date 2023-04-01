@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Cartas = styled.div`
    display: flex;
    flex-wrap: wrap;
-   justify-content: space-between;
+   justify-content: center;
 
 `
 
